@@ -100,7 +100,7 @@ function str2rstr_utf8(input) {
  * Characters >255 have their high-byte silently ignored.
  */
 function rstr2binl(input) {
-    const output = [](input.length >> 2);
+    const output = new Array(input.length >> 2);
     for (let i = 0; i < output.length; i++)
         output[i] = 0;
     for (let i = 0; i < input.length * 8; i += 8)
@@ -210,7 +210,7 @@ function binl_md5(x, len) {
         c = safe_add(c, oldc);
         d = safe_add(d, oldd);
     }
-    return [](a, b, c, d);
+    return new Array(a, b, c, d);
 }
 
 /*

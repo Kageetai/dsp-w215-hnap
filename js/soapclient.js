@@ -149,105 +149,31 @@ const dspW215hnap = {
         });
     },
 
-    on: function () {
-        soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, true)))
-    },
-
-    off: function () {
-        soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, false)))
-    },
-
-    state: function () {
-        soapAction("GetSocketSettings", "OPStatus", requestBody("GetSocketSettings", moduleParameters(1)))
-    },
-
-    consumption: function () {
-        soapAction("GetCurrentPowerConsumption", "CurrentConsumption", requestBody("GetCurrentPowerConsumption", moduleParameters(2)))
-    },
-
-    totalConsumption: function () {
-        soapAction("GetPMWarningThreshold", "TotalConsumption", requestBody("GetPMWarningThreshold", moduleParameters(2)))
-    },
-
-    temperature: function () {
-        soapAction("GetCurrentTemperature", "CurrentTemperature", requestBody("GetCurrentTemperature", moduleParameters(3)))
-    },
-
-    getAPClientSettings: function () {
-        soapAction("GetAPClientSettings", "GetAPClientSettingsResult", requestBody("GetAPClientSettings", radioParameters("RADIO_2.4GHz")))
-    },
-
-    setPowerWarning: function () {
-        soapAction("SetPMWarningThreshold", "SetPMWarningThresholdResult", requestBody("SetPMWarningThreshold", powerWarningParameters()))
-    },
-
-    getPowerWarning: function () {
-        soapAction("GetPMWarningThreshold", "GetPMWarningThresholdResult", requestBody("GetPMWarningThreshold", moduleParameters(2)))
-    },
-
-    getTemperatureSettings: function () {
-        soapAction("GetTempMonitorSettings", "GetTempMonitorSettingsResult", requestBody("GetTempMonitorSettings", moduleParameters(3)))
-    },
-
-    setTemperatureSettings: function () {
-        soapAction("SetTempMonitorSettings", "SetTempMonitorSettingsResult", requestBody("SetTempMonitorSettings", temperatureSettingsParameters(3)))
-    },
-
-    getSiteSurvey: function () {
-        soapAction("GetSiteSurvey", "GetSiteSurveyResult", requestBody("GetSiteSurvey", radioParameters("RADIO_2.4GHz")))
-    },
-
-    triggerWirelessSiteSurvey: function () {
-        soapAction("SetTriggerWirelessSiteSurvey", "SetTriggerWirelessSiteSurveyResult", requestBody("SetTriggerWirelessSiteSurvey", radioParameters("RADIO_2.4GHz")))
-    },
-
-    latestDetection: function () {
-        soapAction("GetLatestDetection", "GetLatestDetectionResult", requestBody("GetLatestDetection", moduleParameters(2)))
-    },
-
-    reboot: function () {
-        soapAction("Reboot", "RebootResult", requestBody("Reboot", ""))
-    },
-
-    isDeviceReady: function () {
-        soapAction("IsDeviceReady", "IsDeviceReadyResult", requestBody("IsDeviceReady", ""))
-    },
-
-    getModuleSchedule: function () {
-        soapAction("GetModuleSchedule", "GetModuleScheduleResult", requestBody("GetModuleSchedule", moduleParameters(0)))
-    },
-
-    getModuleEnabled: function () {
-        soapAction("GetModuleEnabled", "GetModuleEnabledResult", requestBody("GetModuleEnabled", moduleParameters(0)))
-    },
-
-    getModuleGroup: function () {
-        soapAction("GetModuleGroup", "GetModuleGroupResult", requestBody("GetModuleGroup", groupParameters(0)))
-    },
-
-    getScheduleSettings: function () {
-        soapAction("GetScheduleSettings", "GetScheduleSettingsResult", requestBody("GetScheduleSettings", ""))
-    },
-
-    setFactoryDefault: function () {
-        soapAction("SetFactoryDefault", "SetFactoryDefaultResult", requestBody("SetFactoryDefault", ""))
-    },
-
-    getWLanRadios: function () {
-        soapAction("GetWLanRadios", "GetWLanRadiosResult", requestBody("GetWLanRadios", ""))
-    },
-
-    getInternetSettings: function () {
-        soapAction("GetInternetSettings", "GetInternetSettingsResult", requestBody("GetInternetSettings", ""))
-    },
-
-    setAPClientSettings: function () {
-        soapAction("SetAPClientSettings", "SetAPClientSettingsResult", requestBody("SetAPClientSettings", APClientParameters()))
-    },
-
-    settriggerADIC: function () {
-        soapAction("SettriggerADIC", "SettriggerADICResult", requestBody("SettriggerADIC", ""))
-    }
+    on: () => soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, true))),
+    off: () => soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, false))),
+    state: () => soapAction("GetSocketSettings", "OPStatus", requestBody("GetSocketSettings", moduleParameters(1))),
+    consumption: () => soapAction("GetCurrentPowerConsumption", "CurrentConsumption", requestBody("GetCurrentPowerConsumption", moduleParameters(2))),
+    totalConsumption: () => soapAction("GetPMWarningThreshold", "TotalConsumption", requestBody("GetPMWarningThreshold", moduleParameters(2))),
+    temperature: () => soapAction("GetCurrentTemperature", "CurrentTemperature", requestBody("GetCurrentTemperature", moduleParameters(3))),
+    getAPClientSettings: () => soapAction("GetAPClientSettings", "GetAPClientSettingsResult", requestBody("GetAPClientSettings", radioParameters("RADIO_2.4GHz"))),
+    setPowerWarning: () => soapAction("SetPMWarningThreshold", "SetPMWarningThresholdResult", requestBody("SetPMWarningThreshold", powerWarningParameters())),
+    getPowerWarning: () => soapAction("GetPMWarningThreshold", "GetPMWarningThresholdResult", requestBody("GetPMWarningThreshold", moduleParameters(2))),
+    getTemperatureSettings: () => soapAction("GetTempMonitorSettings", "GetTempMonitorSettingsResult", requestBody("GetTempMonitorSettings", moduleParameters(3))),
+    setTemperatureSettings: () => soapAction("SetTempMonitorSettings", "SetTempMonitorSettingsResult", requestBody("SetTempMonitorSettings", temperatureSettingsParameters(3))),
+    getSiteSurvey: () => soapAction("GetSiteSurvey", "GetSiteSurveyResult", requestBody("GetSiteSurvey", radioParameters("RADIO_2.4GHz"))),
+    triggerWirelessSiteSurvey: () => soapAction("SetTriggerWirelessSiteSurvey", "SetTriggerWirelessSiteSurveyResult", requestBody("SetTriggerWirelessSiteSurvey", radioParameters("RADIO_2.4GHz"))),
+    latestDetection: () => soapAction("GetLatestDetection", "GetLatestDetectionResult", requestBody("GetLatestDetection", moduleParameters(2))),
+    reboot: () => soapAction("Reboot", "RebootResult", requestBody("Reboot", "")),
+    isDeviceReady: () => soapAction("IsDeviceReady", "IsDeviceReadyResult", requestBody("IsDeviceReady", "")),
+    getModuleSchedule: () => soapAction("GetModuleSchedule", "GetModuleScheduleResult", requestBody("GetModuleSchedule", moduleParameters(0))),
+    getModuleEnabled: () => soapAction("GetModuleEnabled", "GetModuleEnabledResult", requestBody("GetModuleEnabled", moduleParameters(0))),
+    getModuleGroup: () => soapAction("GetModuleGroup", "GetModuleGroupResult", requestBody("GetModuleGroup", groupParameters(0))),
+    getScheduleSettings: () => soapAction("GetScheduleSettings", "GetScheduleSettingsResult", requestBody("GetScheduleSettings", "")),
+    setFactoryDefault: () => soapAction("SetFactoryDefault", "SetFactoryDefaultResult", requestBody("SetFactoryDefault", "")),
+    getWLanRadios: () => soapAction("GetWLanRadios", "GetWLanRadiosResult", requestBody("GetWLanRadios", "")),
+    getInternetSettings: () => soapAction("GetInternetSettings", "GetInternetSettingsResult", requestBody("GetInternetSettings", "")),
+    setAPClientSettings: () => soapAction("SetAPClientSettings", "SetAPClientSettingsResult", requestBody("SetAPClientSettings", APClientParameters())),
+    settriggerADIC: () => soapAction("SettriggerADIC", "SettriggerADICResult", requestBody("SettriggerADIC", ""))
 };
 
 export default dspW215hnap;
