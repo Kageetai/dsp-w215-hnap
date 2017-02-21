@@ -18,10 +18,7 @@
  * They take string arguments and return either hex or base-64 encoded strings
  */
 
-exports.hex_hmac_md5=function(k, d)
-{ 
-	return rstr2hex(rstr_hmac_md5(str2rstr_utf8(k), str2rstr_utf8(d))); 
-};
+exports.hex_hmac_md5=(k, d) => rstr2hex(rstr_hmac_md5(str2rstr_utf8(k), str2rstr_utf8(d)));
 
 
 /*

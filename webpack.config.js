@@ -1,8 +1,7 @@
-var path = require('path');
-var webpack = require("webpack");
+const path = require('path');
 
 module.exports = {
-    entry: './app.js',
+    entry: './index.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -18,5 +17,6 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    target: 'node' // fs module etc.
 };

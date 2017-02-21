@@ -5,15 +5,15 @@
  *
  * @type {exports|module.exports}
  */
-var soapclient = require('./js/soapclient');
-var fs = require('fs');
+import * as fs from 'fs';
 
-var config = require('./config.json');
+import soapclient from './js/soapclient';
+import config from './config.json';
 
-var OUTPUT_FILE = "result.txt";
-var POLLING_INTERVAL = 60000;
+const OUTPUT_FILE = "result.txt";
+const POLLING_INTERVAL = 60000;
 
-soapclient.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(function (status) {
+soapclient.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(status => {
     if (!status) {
         throw "Login failed!";
     }
@@ -23,19 +23,19 @@ soapclient.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(func
     start();
 });
 
-function start(){
-    soapclient.on().done(function (result){
+function start() {
+    soapclient.on().done(result => {
         console.log(result);
         read();
     })
 }
 
 function read() {
-    soapclient.consumption().done(function (power) {
-        soapclient.temperature().done(function (temperature) {
+    soapclient.consumption().done(power => {
+        soapclient.temperature().done(temperature => {
             console.log(new Date().toLocaleString(), power, temperature);
             save(power, temperature);
-            setTimeout(function () {
+            setTimeout(() => {
                 read();
             }, POLLING_INTERVAL);
         });
@@ -43,7 +43,7 @@ function read() {
 }
 
 function save(power, temperature) {
-    fs.writeFile(OUTPUT_FILE, new Date().toLocaleString() + ";" + power + ";" + temperature + "\r\n", {flag: "a"}, function (err) {
+    fs.writeFile(OUTPUT_FILE, new Date().toLocaleString() + ";" + power + ";" + temperature + "\r\n", { flag: "a" }, err => {
         if (err) throw err;
     })
 }
