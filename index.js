@@ -7,13 +7,13 @@
  */
 import * as fs from 'fs';
 
-import soapclient from './js/soapclient';
+import dspW215hnap from './js/soapclient';
 import config from './config.json';
 
 const OUTPUT_FILE = "result.txt";
 const POLLING_INTERVAL = 60000;
 
-soapclient.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(status => {
+dspW215hnap.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(status => {
     if (!status) {
         throw "Login failed!";
     }
@@ -24,15 +24,15 @@ soapclient.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(stat
 });
 
 function start() {
-    soapclient.on().done(result => {
+    dspW215hnap.on().done(result => {
         console.log(result);
         read();
     })
 }
 
 function read() {
-    soapclient.consumption().done(power => {
-        soapclient.temperature().done(temperature => {
+    dspW215hnap.consumption().done(power => {
+        dspW215hnap.temperature().done(temperature => {
             console.log(new Date().toLocaleString(), power, temperature);
             save(power, temperature);
             setTimeout(() => {

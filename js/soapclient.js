@@ -1,7 +1,7 @@
-const md5 = require('./hmac_md5');
-const request = require('then-request');
-const DOMParser = require('xmldom').DOMParser;
-const AES = require('./AES');
+import md5  from './hmac_md5';
+import request  from 'then-request';
+import { DOMParser } from 'xmldom';
+import AES  from './AES';
 
 const HNAP1_XMLNS = "http://purenetworks.com/HNAP1/";
 const HNAP_METHOD = "POST";
@@ -9,25 +9,6 @@ const HNAP_BODY_ENCODING = "UTF8";
 const HNAP_LOGIN_METHOD = "Login";
 
 const HNAP_AUTH = { URL: "", User: "", Pwd: "", Result: "", Challenge: "", PublicKey: "", Cookie: "", PrivateKey: "" };
-
-exports.login = (user, password, url) => {
-    HNAP_AUTH.User = user;
-    HNAP_AUTH.Pwd = password;
-    HNAP_AUTH.URL = url;
-
-    return request(HNAP_METHOD, HNAP_AUTH.URL, {
-        headers: {
-            "Content-Type": "text/xml; charset=utf-8",
-            "SOAPAction": '"' + HNAP1_XMLNS + HNAP_LOGIN_METHOD + '"'
-        },
-        body: requestBody(HNAP_LOGIN_METHOD, loginRequest())
-    }).then(response => {
-        save_login_result(response.getBody(HNAP_BODY_ENCODING));
-        return soapAction(HNAP_LOGIN_METHOD, "LoginResult", requestBody(HNAP_LOGIN_METHOD, loginParameters()));
-    }).catch(err => {
-        console.log("error:", err);
-    });
-};
 
 function save_login_result(body) {
     const doc = new DOMParser().parseFromString(body);
@@ -78,56 +59,6 @@ function soapAction(method, responseElement, body) {
         console.log("error:", err);
     });
 }
-
-exports.on = () => soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, true)));
-
-exports.off = () => soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, false)));
-
-exports.state = () => soapAction("GetSocketSettings", "OPStatus", requestBody("GetSocketSettings", moduleParameters(1)));
-
-exports.consumption = () => soapAction("GetCurrentPowerConsumption", "CurrentConsumption", requestBody("GetCurrentPowerConsumption", moduleParameters(2)));
-
-exports.totalConsumption = () => soapAction("GetPMWarningThreshold", "TotalConsumption", requestBody("GetPMWarningThreshold", moduleParameters(2)));
-
-exports.temperature = () => soapAction("GetCurrentTemperature", "CurrentTemperature", requestBody("GetCurrentTemperature", moduleParameters(3)));
-
-exports.getAPClientSettings = () => soapAction("GetAPClientSettings", "GetAPClientSettingsResult", requestBody("GetAPClientSettings", radioParameters("RADIO_2.4GHz")));
-
-exports.setPowerWarning = () => soapAction("SetPMWarningThreshold", "SetPMWarningThresholdResult", requestBody("SetPMWarningThreshold", powerWarningParameters()));
-
-exports.getPowerWarning = () => soapAction("GetPMWarningThreshold", "GetPMWarningThresholdResult", requestBody("GetPMWarningThreshold", moduleParameters(2)));
-
-exports.getTemperatureSettings = () => soapAction("GetTempMonitorSettings", "GetTempMonitorSettingsResult", requestBody("GetTempMonitorSettings", moduleParameters(3)));
-
-exports.setTemperatureSettings = () => soapAction("SetTempMonitorSettings", "SetTempMonitorSettingsResult", requestBody("SetTempMonitorSettings", temperatureSettingsParameters(3)));
-
-exports.getSiteSurvey = () => soapAction("GetSiteSurvey", "GetSiteSurveyResult", requestBody("GetSiteSurvey", radioParameters("RADIO_2.4GHz")));
-
-exports.triggerWirelessSiteSurvey = () => soapAction("SetTriggerWirelessSiteSurvey", "SetTriggerWirelessSiteSurveyResult", requestBody("SetTriggerWirelessSiteSurvey", radioParameters("RADIO_2.4GHz")));
-
-exports.latestDetection = () => soapAction("GetLatestDetection", "GetLatestDetectionResult", requestBody("GetLatestDetection", moduleParameters(2)));
-
-exports.reboot = () => soapAction("Reboot", "RebootResult", requestBody("Reboot", ""));
-
-exports.isDeviceReady = () => soapAction("IsDeviceReady", "IsDeviceReadyResult", requestBody("IsDeviceReady", ""));
-
-exports.getModuleSchedule = () => soapAction("GetModuleSchedule", "GetModuleScheduleResult", requestBody("GetModuleSchedule", moduleParameters(0)));
-
-exports.getModuleEnabled = () => soapAction("GetModuleEnabled", "GetModuleEnabledResult", requestBody("GetModuleEnabled", moduleParameters(0)));
-
-exports.getModuleGroup = () => soapAction("GetModuleGroup", "GetModuleGroupResult", requestBody("GetModuleGroup", groupParameters(0)));
-
-exports.getScheduleSettings = () => soapAction("GetScheduleSettings", "GetScheduleSettingsResult", requestBody("GetScheduleSettings", ""));
-
-exports.setFactoryDefault = () => soapAction("SetFactoryDefault", "SetFactoryDefaultResult", requestBody("SetFactoryDefault", ""));
-
-exports.getWLanRadios = () => soapAction("GetWLanRadios", "GetWLanRadiosResult", requestBody("GetWLanRadios", ""));
-
-exports.getInternetSettings = () => soapAction("GetInternetSettings", "GetInternetSettingsResult", requestBody("GetInternetSettings", ""));
-
-exports.setAPClientSettings = () => soapAction("SetAPClientSettings", "SetAPClientSettingsResult", requestBody("SetAPClientSettings", APClientParameters()));
-
-exports.settriggerADIC = () => soapAction("SettriggerADIC", "SettriggerADICResult", requestBody("SettriggerADIC", ""));
 
 /**
  * @return {string}
@@ -197,3 +128,126 @@ function readResponseValue(body, elementName) {
         return (node && node.firstChild) ? node.firstChild.nodeValue : "ERROR";
     }
 }
+
+const dspW215hnap = {
+    login: function (user, password, url) {
+        HNAP_AUTH.User = user;
+        HNAP_AUTH.Pwd = password;
+        HNAP_AUTH.URL = url;
+
+        return request(HNAP_METHOD, HNAP_AUTH.URL, {
+            headers: {
+                "Content-Type": "text/xml; charset=utf-8",
+                "SOAPAction": '"' + HNAP1_XMLNS + HNAP_LOGIN_METHOD + '"'
+            },
+            body: requestBody(HNAP_LOGIN_METHOD, loginRequest())
+        }).then(response => {
+            save_login_result(response.getBody(HNAP_BODY_ENCODING));
+            return soapAction(HNAP_LOGIN_METHOD, "LoginResult", requestBody(HNAP_LOGIN_METHOD, loginParameters()));
+        }).catch(err => {
+            console.log("error:", err);
+        });
+    },
+
+    on: function () {
+        soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, true)))
+    },
+
+    off: function () {
+        soapAction("SetSocketSettings", "SetSocketSettingsResult", requestBody("SetSocketSettings", controlParameters(1, false)))
+    },
+
+    state: function () {
+        soapAction("GetSocketSettings", "OPStatus", requestBody("GetSocketSettings", moduleParameters(1)))
+    },
+
+    consumption: function () {
+        soapAction("GetCurrentPowerConsumption", "CurrentConsumption", requestBody("GetCurrentPowerConsumption", moduleParameters(2)))
+    },
+
+    totalConsumption: function () {
+        soapAction("GetPMWarningThreshold", "TotalConsumption", requestBody("GetPMWarningThreshold", moduleParameters(2)))
+    },
+
+    temperature: function () {
+        soapAction("GetCurrentTemperature", "CurrentTemperature", requestBody("GetCurrentTemperature", moduleParameters(3)))
+    },
+
+    getAPClientSettings: function () {
+        soapAction("GetAPClientSettings", "GetAPClientSettingsResult", requestBody("GetAPClientSettings", radioParameters("RADIO_2.4GHz")))
+    },
+
+    setPowerWarning: function () {
+        soapAction("SetPMWarningThreshold", "SetPMWarningThresholdResult", requestBody("SetPMWarningThreshold", powerWarningParameters()))
+    },
+
+    getPowerWarning: function () {
+        soapAction("GetPMWarningThreshold", "GetPMWarningThresholdResult", requestBody("GetPMWarningThreshold", moduleParameters(2)))
+    },
+
+    getTemperatureSettings: function () {
+        soapAction("GetTempMonitorSettings", "GetTempMonitorSettingsResult", requestBody("GetTempMonitorSettings", moduleParameters(3)))
+    },
+
+    setTemperatureSettings: function () {
+        soapAction("SetTempMonitorSettings", "SetTempMonitorSettingsResult", requestBody("SetTempMonitorSettings", temperatureSettingsParameters(3)))
+    },
+
+    getSiteSurvey: function () {
+        soapAction("GetSiteSurvey", "GetSiteSurveyResult", requestBody("GetSiteSurvey", radioParameters("RADIO_2.4GHz")))
+    },
+
+    triggerWirelessSiteSurvey: function () {
+        soapAction("SetTriggerWirelessSiteSurvey", "SetTriggerWirelessSiteSurveyResult", requestBody("SetTriggerWirelessSiteSurvey", radioParameters("RADIO_2.4GHz")))
+    },
+
+    latestDetection: function () {
+        soapAction("GetLatestDetection", "GetLatestDetectionResult", requestBody("GetLatestDetection", moduleParameters(2)))
+    },
+
+    reboot: function () {
+        soapAction("Reboot", "RebootResult", requestBody("Reboot", ""))
+    },
+
+    isDeviceReady: function () {
+        soapAction("IsDeviceReady", "IsDeviceReadyResult", requestBody("IsDeviceReady", ""))
+    },
+
+    getModuleSchedule: function () {
+        soapAction("GetModuleSchedule", "GetModuleScheduleResult", requestBody("GetModuleSchedule", moduleParameters(0)))
+    },
+
+    getModuleEnabled: function () {
+        soapAction("GetModuleEnabled", "GetModuleEnabledResult", requestBody("GetModuleEnabled", moduleParameters(0)))
+    },
+
+    getModuleGroup: function () {
+        soapAction("GetModuleGroup", "GetModuleGroupResult", requestBody("GetModuleGroup", groupParameters(0)))
+    },
+
+    getScheduleSettings: function () {
+        soapAction("GetScheduleSettings", "GetScheduleSettingsResult", requestBody("GetScheduleSettings", ""))
+    },
+
+    setFactoryDefault: function () {
+        soapAction("SetFactoryDefault", "SetFactoryDefaultResult", requestBody("SetFactoryDefault", ""))
+    },
+
+    getWLanRadios: function () {
+        soapAction("GetWLanRadios", "GetWLanRadiosResult", requestBody("GetWLanRadios", ""))
+    },
+
+    getInternetSettings: function () {
+        soapAction("GetInternetSettings", "GetInternetSettingsResult", requestBody("GetInternetSettings", ""))
+    },
+
+    setAPClientSettings: function () {
+        soapAction("SetAPClientSettings", "SetAPClientSettingsResult", requestBody("SetAPClientSettings", APClientParameters()))
+    },
+
+    settriggerADIC: function () {
+        soapAction("SettriggerADIC", "SettriggerADICResult", requestBody("SettriggerADIC", ""))
+    }
+};
+
+export default dspW215hnap;
