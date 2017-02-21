@@ -1,0 +1,5 @@
+{
+  "LOGIN_USER": "admin",
+  "LOGIN_PWD": "<PIN CODE>",
+  "HNAP_URL": "http://192.168.1.128/HNAP1"
+}

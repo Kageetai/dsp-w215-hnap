@@ -8,13 +8,12 @@
 var soapclient = require('./js/soapclient');
 var fs = require('fs');
 
+var config = require('./config.json');
+
 var OUTPUT_FILE = "result.txt";
-var LOGIN_USER = "admin";
-var LOGIN_PWD = "<PIN CODE>";
-var HNAP_URL = "http://192.168.1.128/HNAP1";
 var POLLING_INTERVAL = 60000;
 
-soapclient.login(LOGIN_USER, LOGIN_PWD, HNAP_URL).done(function (status) {
+soapclient.login(config.LOGIN_USER, config.LOGIN_PWD, config.HNAP_URL).done(function (status) {
     if (!status) {
         throw "Login failed!";
     }
@@ -29,7 +28,7 @@ function start(){
         console.log(result);
         read();
     })
-};
+}
 
 function read() {
     soapclient.consumption().done(function (power) {
